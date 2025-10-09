@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 
+// definicao do no
 struct NO{
     public:
     int info;
@@ -8,17 +9,19 @@ struct NO{
     NO* ant;
 };
 
+// definicao da lista dupla encadeada
 class ListaDupla
-{ private:
+{ private: // atributos
     NO* inicio;
     NO* fim;
     int tamanho;
-  public:
+  public: // construtor
   ListaDupla(){
     inicio = NULL;
     fim = NULL;
     tamanho = 0;
   }
+  // metodos
     bool ListaVaziaLD();
     void InserirInicioLD(int k);
     void InserirFimLD(int k);
@@ -28,11 +31,13 @@ class ListaDupla
     void deletar(int k);
 };
 
-ListaDupla lista;
+ListaDupla lista; // cria um objeto da classe ListaDupla
 
+// define se a lista esta vazia
 bool ListaDupla::ListaVaziaLD(){
     return (inicio == NULL && fim == NULL);
 }
+
 //--------------------------------------------
 // relevante para a questão 2
 //--------------------------------------------
@@ -46,14 +51,15 @@ void ListaDupla::InserirInicioLD(int k){
     //    }
     //    vassoura = vassoura->prox;
     //}
-    NO *novo;
-    novo = new NO;
-    novo->info = k;
-    novo->ant = NULL;
+    NO *novo; // novo no
+    novo = new NO; // aloca memoria para o novo no
+    novo->info = k; // atribui o valor ao novo no
+    novo->ant = NULL; // o anterior do novo no sera NULL
+    // se a lista estiver vazia, o novo no sera o inicio e o fim
     if(lista.ListaVaziaLD()) {
         novo->prox = NULL;
         inicio = fim = novo;
-    }else
+    }else // se a lista nao estiver vazia, insere no inicio
     {
         novo->prox = inicio;
         inicio->ant = novo;
@@ -65,15 +71,16 @@ void ListaDupla::InserirInicioLD(int k){
 //--------------------------------------------
 
 void ListaDupla::InserirFimLD(int k){
-    NO *novo;
-    novo = new NO;
-    novo->info = k;
-    novo->prox = NULL;
+    NO *novo; // novo no
+    novo = new NO; // aloca memoria para o novo no
+    novo->info = k; // atribui o valor ao novo no
+    novo->prox = NULL; // o proximo do novo no sera NULL
+    // se a lista estiver vazia, o novo no sera o inicio e o fim
     if(lista.ListaVaziaLD()){
         novo->ant = NULL;
         inicio = fim = novo;
     }
-    else{
+    else{ // se a lista nao estiver vazia, insere no fim
         novo->ant = fim;
         fim->prox = novo;
         fim = novo;
@@ -84,7 +91,8 @@ void ListaDupla::InserirFimLD(int k){
 }
 
 void ListaDupla::ImprimirLD(){
-    NO* aux;
+    NO* aux; // no auxiliar
+    // percorre a lista imprimindo os elementos
     aux = inicio;
     while(aux != NULL){
         cout << aux->info << " ";
@@ -99,7 +107,8 @@ void ListaDupla::ImprimirLD(){
 // relevante para a questão 2
 //--------------------------------------------
 void ListaDupla::repete(int x, int y){
-    NO *aux;
+    NO *aux; // no auxiliar
+    // percorre a lista procurando o elemento
     aux = inicio;
     while(aux != NULL){
         if(aux->info == x){
@@ -109,6 +118,7 @@ void ListaDupla::repete(int x, int y){
         }
         aux = aux->prox;
     }
+    // caso nao encontre, insere
     switch(y){
         case 1:
             lista.InserirInicioLD(x);
@@ -121,6 +131,7 @@ void ListaDupla::repete(int x, int y){
 }
 //--------------------------------------------
 
+//menu de opcoes   
 void ListaDupla::menu(){
     system("cls");
     cout << "Escolha: " << endl;
@@ -157,30 +168,35 @@ void ListaDupla::menu(){
     }
 }
 
+//logica para deletar um elemento
 void ListaDupla::deletar(int k){
-    NO *aux;
+    NO *aux; //no auxiliar
     aux = inicio;
-    while(aux != NULL){
-        if(aux->info == k){
-            if(aux == inicio){
+    // percorre a lista procurando o elemento
+    while(aux != NULL){ //enquanto nao chegar no fim da lista
+        if(aux->info == k){ //se encontrar o elemento
+            if(aux == inicio){ //se for o primeiro elemento
+                // substitui o inicio pelo proximo
                 inicio = aux->prox;
                 if(inicio != NULL){
                     inicio->ant = NULL;
                 } else {
                     fim = NULL;
                 }
-            } else if(aux == fim){
+            } else if(aux == fim){ //se for o ultimo elemento
+                // substiui o fim pelo anterior
                 fim = aux->ant;
                 if(fim != NULL){
                     fim->prox = NULL;
                 } else {
-                    inicio = NULL;
+                    inicio = NULL; // lista ficou vazia
                 }
             } else {
+                // se for um elemento do meio, conecta o anterior com o proximo
                 aux->ant->prox = aux->prox;
                 aux->prox->ant = aux->ant;
             }
-            delete aux;
+            delete aux; //deleta o auxiliar
             tamanho--;
             cout << "Elemento " << k << " deletado." << endl;
             system("pause");
