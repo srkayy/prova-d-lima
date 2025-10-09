@@ -29,26 +29,32 @@ public:
 
     // a) Incluir elementos em qualquer posição
     void inserir(int valor, int posicao) {
+        // Verifica se a posição é válida
         if (posicao < 0 || posicao > size) {
             cout << "Posicao invalida! Posicoes validas: 0 a " << size << endl;
             return;
         }
         
+        // Cria um novo nó
         Node* novoNo = new Node(valor);
         
+        // Lista vazia
         if (head == nullptr) {
             head = tail = novoNo;
-        }
+        } 
+        // Inserção no início
         else if (posicao == 0) {
             novoNo->next = head;
             head->prev = novoNo;
             head = novoNo;
         }
+        // Inserção no fim
         else if (posicao == size) {
             tail->next = novoNo;
             novoNo->prev = tail;
             tail = novoNo;
         }
+        // Inserção no meio
         else {
             Node* atual = head;
             for (int i = 0; i < posicao - 1; i++) {
@@ -67,17 +73,20 @@ public:
 
     // b) Impressão do conteúdo da lista
     void imprimir() {
+        // Lista vazia
         if (head == nullptr) {
             cout << "Lista vazia!" << endl;
             return;
         }
         
+        // Chama a função recursiva para imprimir
         cout << "Lista (tamanho " << size << "): ";
         imprimirRecursivo(head);
         cout << endl;
     }
 
 private:
+// Função recursiva para imprimir a lista
     void imprimirRecursivo(Node* atual) {
         if (atual == nullptr) {
             return;
@@ -95,20 +104,21 @@ private:
 public:
     // c) Busca de um determinado elemento
     int buscar(int valor) {
-        Node* atual = head;
+        Node* atual = head; // Inicia o no atual no inicio da lista
         int posicao = 0;
         
+        // Percorre a lista
         while (atual != nullptr) {
             if (atual->data == valor) {
                 return posicao;
             }
-            atual = atual->next;
+            atual = atual->next; // Move para o proximo no
             posicao++;
         }
         
         return -1;
     }
-
+    // Função para interagir com o usuário na busca
     void buscar() {
         if (head == nullptr) {
             cout << "Lista vazia! Nao eh possivel buscar." << endl;
@@ -129,31 +139,36 @@ public:
 
     // d) Exclusão de elementos em qualquer posição
     void excluir(int posicao) {
+        // Verifica se a lista está vazia
         if (posicao < 0 || posicao >= size) {
             cout << "Posicao invalida! Posicoes validas: 0 a " << size - 1 << endl;
             return;
         }
         
-        Node* noExcluir;
+        Node* noExcluir; // Auxiliar
         int valorExcluido;
         
+        // Lista com um unico elemento
         if (size == 1) {
             noExcluir = head;
             valorExcluido = noExcluir->data;
             head = tail = nullptr;
         }
+        // Exclusão no início
         else if (posicao == 0) {
             noExcluir = head;
             valorExcluido = noExcluir->data;
             head = head->next;
             head->prev = nullptr;
         }
+        // Exclusão no fim
         else if (posicao == size - 1) {
             noExcluir = tail;
             valorExcluido = noExcluir->data;
             tail = tail->prev;
             tail->next = nullptr;
         }
+        // Exclusão no meio
         else {
             Node* atual = head;
             for (int i = 0; i < posicao; i++) {
@@ -169,8 +184,9 @@ public:
         delete noExcluir;
         size--;
     }
-
+    // Função para interagir com o usuário na exclusão
     void excluir() {
+        // Verifica se a lista está vazia
         if (head == nullptr) {
             cout << "Lista vazia! Nao eh possivel excluir." << endl;
             return;
@@ -202,7 +218,7 @@ public:
         return size;
     }
 
-    void limparLista() {
+    void limparLista() { // Limpa toda a lista
         while (head != nullptr) {
             Node* temp = head;
             head = head->next;
